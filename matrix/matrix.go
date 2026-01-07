@@ -1,11 +1,15 @@
 package matrix
 
+import (
+	"fmt"
+	"math"
+)
+
 func New(v ...[]float64) *Matrix {
-	m := &Matrix{}
+	m := Matrix{}
 	m.Set(v)
 	return &m
 }
-
 
 
 type Matrix struct {
@@ -14,7 +18,6 @@ type Matrix struct {
 	W int64
 	quadratic bool
 	maxValue float64
-
 }
 
 func (m *Matrix) Set(v [][]float64) {
@@ -22,14 +25,13 @@ func (m *Matrix) Set(v [][]float64) {
 	for i := 0; i < (len(v)); i++ {
 		if i == 0 {
 			m.W = int64(len(v[i]))
-
 		} else {
 			if m.W != int64(len(v[i])) {
 				panic("Error in matrix size")
 			}
 		}
-		for j := 0; j < (len(v[i])); j++ {
-			value := math.Sqrt(v[i][j]) * v[i][j]
+		for j := 0; j < len(v[i]); j++ {
+			value := math.Sqrt(v[i][j] * v[i][j])
 			if value > m.maxValue {
 				m.maxValue = value
 			}
@@ -41,16 +43,16 @@ func (m *Matrix) Set(v [][]float64) {
 }
 
 func (m *Matrix) Print() {
-	for i := 0; i < (len(*m.M)); i++ {
-		fmt.Print("| ")
+	for i := 0; i < len((*m).M); i++ {
+		fmt.Print("[ ")
 		for j := 0; j < len((*m).M[i]); j++ {
 			if j != 0 {
 				fmt.Print(" ")
 			}
-			fmt.Printf((*m).M[i][j])
+			fmt.Print((*m).M[i][j])
 			
 		}
-		fmt.Print(" |")
+		fmt.Print(" ]")
 		fmt.Println()
 	}
 	fmt.Println((*m).H, "x", (*m).W)
